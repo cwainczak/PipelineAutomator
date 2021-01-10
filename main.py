@@ -13,7 +13,7 @@ def main():
     f = open("video_titles.txt", "r")
     line = f.readline()
     while line != "":
-        line = dealWithCommasAndNewline(line)
+        line = dealWithExtraCharacters(line)
         publishVideo(line, staffName)
         doneMessage = line + "\t|\tDONE"
         print(doneMessage)
@@ -22,9 +22,16 @@ def main():
     p.close()
     f.close()
 
-def dealWithCommasAndNewline(title):
+def dealWithExtraCharacters(title):
     if "," in title:
-        title = title.split(",")[0]
+        titleList = title.split(",")
+        title = getLongerPartOfString(titleList)
+    if "?" in title:
+        titleList = title.split("?")
+        title = getLongerPartOfString(titleList)
+    if "&" in title:
+        titleList = title.split("&")
+        title = getLongerPartOfString(titleList)
     if "\n" in title:
         title = title.split("\n")[0]
     return title
@@ -32,6 +39,13 @@ def dealWithCommasAndNewline(title):
 def deleteLine():
     o = open("video_titles.txt")
 
+def getLongerPartOfString(titleList):
+    # longer side is generally more descriptive, so it is useful to return the longer side
+    longest = ""
+    for part in titleList:
+        if len(part) > len(longest):
+            longest = part
+    return longest
 
 def publishVideo(title, staffName):
 
