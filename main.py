@@ -4,15 +4,21 @@ import time
 import re
 
 def main():
-    choice = getOption()
+    choice = getOptionMenu()
     if choice == "1":
         # parse video titles
         parsePlaylistForVideos()
     elif choice == "2":
         # check for missing videos
-        print("These are the missing videos:\n")
-        for title in checkForMissingVideos():
-            print(title)
+        i = int(input("Enter the amount of playlist .html files to parse: "))
+        missingVideos = checkForMissingVideos(i)
+        numOfMissingVideos = len(missingVideos)
+        print("There are: " + str(numOfMissingVideos) + " missing videos...")
+        i = getOptionYN("Do you want to write them to video_titles_remaining.txt? (y/n): ")
+        if i == "y":
+            f = open("video_titles_remaining.txt", "w")
+            for title in missingVideos:
+                f.write(title + "\n")
     elif choice == "3":
         # continue publishing
         continuePublishing()
@@ -22,14 +28,14 @@ def main():
 def continuePublishing():
     staffName = input("Enter the staff's last name: ")
     # get amount of titles
-    videosLeft = getLineCount("video_titles.txt")
+    videosLeft = getLineCount("video_titles_remaining.txt")
     # open pipeline
     webbrowser.open("https://pipeline.westfield.ma.edu/app/library.aspx")
     wait(4)
     # get list of published videos
     p = open("published_videos.txt", "a")
     # get list of titles
-    f = open("video_titles.txt", "r")
+    f = open("video_titles_remaining.txt", "r")
     line = f.readline()
     while line != "":
         line = dealWithExtraCharacters(line)
@@ -47,9 +53,9 @@ def continuePublishing():
     p.close()
     f.close()
 
-def getOption():
+def getOptionMenu():
     choice = input("--------------------------------------------------------\n"
-                   "Parse playlist .html file for video titles: 1\n"
+                   "Parse playlist .html file for all video titles: 1\n"
                    "Check for shared library missing videos: 2\n"
                    "Continue publishing from current progress: 3\n"
                    "Exit: 4\n"
@@ -57,12 +63,21 @@ def getOption():
                    "Select an option - ")
     while choice != "1" and choice != "2" and choice != "3" and choice != "4":
         print("Invalid input. Enter respective number to continue.")
-        choice = input("Select an option -\n"
-                       "Parse current .html file for video titles: 1\n"
+        choice = input("--------------------------------------------------------\n"
+                       "Parse playlist .html file for all video titles: 1\n"
                        "Check for shared library missing videos: 2\n"
                        "Continue publishing from current progress: 3\n"
-                       "Exit: 4")
+                       "Exit: 4\n"
+                       "--------------------------------------------------------\n"
+                       "Select an option - ")
     return choice
+
+def getOptionYN(prompt):
+    i = input(prompt)
+    while i != "y" and i != "n":
+        print("Invalid input. Enter y or n to continue.")
+        i = input(prompt)
+    return i
 
 def dealWithExtraCharacters(title):
     if "," in title:
@@ -87,14 +102,14 @@ def getLongerPartOfString(titleList):
     return longest
 
 def parsePlaylistForVideos():
-    dir = "full playlists/" + input("Enter the staff's last name: ") + ".html"
+    dir = "playlists/" + input("Enter the staff's last name: ") + ".html"
     #rule = r"<div class=\"ev-pl-item-title\" title=\"([a-zA-Z0-9 '?&{},#;$\.\-/\(\)]*)"
     rule = r"<div class=\"ev-pl-item-title\" title=\"([^<>\"]*)\""
     v = open(dir, "r")
     data = v.read().replace('\n', '').replace('\r', '')
     v.close()
     titles = re.findall(rule, data, re.IGNORECASE)
-    # write titles to video_titles.txt
+    # write titles to video_titles_remaining.txt
     vt = open("all_video_titles.txt", "w")
     for title in titles:
         if title != "${name}":
@@ -107,9 +122,7 @@ def parsePlaylistForVideos():
             vt.write(title + "\n")
     vt.close()
 
-def checkForMissingVideos():
-    # TAKE A LOOK AT THIS TO MAKE SURE IT WORKS PROPERLY
-
+def checkForMissingVideos(numOfHtmlFiles):
     # add all videos to list
     expectedVideoList = []
     v = open("all_video_titles.txt", "r")
@@ -117,13 +130,24 @@ def checkForMissingVideos():
     while line != "":
         expectedVideoList.append(line)
         line = v.readline().replace('\n', '')
-
-    # get titles from shared library
-    v = open("D:/Downloads/raw_html.html", "r")
-    data = v.read().replace('\n', '').replace('\r', '')
-    rule = r"target=\"_blank\" title=\"Preview: ([^<>\"]*)\""
+    v.flush()
     v.close()
+    # get titles from shared library
+    data = ""
+    for x in range(numOfHtmlFiles):
+        v = open("D:/Downloads/raw_html" + str(x+1) + ".html", "r")
+        data += v.read().replace('\n', '').replace('\r', '')
+        v.flush()
+        v.close()
+    rule = r"target=\"_blank\" title=\"Preview: ([^<>\"]*)\""
     actualVideoList = re.findall(rule, data, re.IGNORECASE)
+    for x in range(len(actualVideoList)):
+        if "&#39;" in actualVideoList[x]: # html code for '
+            actualVideoList[x] = actualVideoList[x].replace("&#39;", "'")
+        if "&amp;" in actualVideoList[x]: # html code for &
+            actualVideoList[x] = actualVideoList[x].replace("&amp;", "&")
+        if "&quot;" in actualVideoList[x]: # html code for "
+            actualVideoList[x] = actualVideoList[x].replace("&quot;", '"')
 
     # compare and keep track of missing videos
     for i in range(len(actualVideoList)):
