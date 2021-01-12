@@ -23,6 +23,11 @@ def main():
         # continue publishing
         continuePublishing()
     elif choice == "4":
+        # confirm publishing
+        input("Make sure the appropriate webpage is pulled up beforehand.\nPress enter to continue, and then quickly click the window to ensure focus.")
+        wait(3)
+        confirmPublishedVideos()
+    elif choice == "5":
         exit(1)
 
 def continuePublishing():
@@ -58,16 +63,18 @@ def getOptionMenu():
                    "Parse playlist .html file for all video titles: 1\n"
                    "Check for shared library missing videos: 2\n"
                    "Continue publishing from current progress: 3\n"
-                   "Exit: 4\n"
+                   "Confirm published videos: 4\n"
+                   "Exit: 5\n"
                    "--------------------------------------------------------\n"
                    "Select an option - ")
-    while choice != "1" and choice != "2" and choice != "3" and choice != "4":
+    while choice != "1" and choice != "2" and choice != "3" and choice != "4" and choice != "5":
         print("Invalid input. Enter respective number to continue.")
         choice = input("--------------------------------------------------------\n"
                        "Parse playlist .html file for all video titles: 1\n"
                        "Check for shared library missing videos: 2\n"
                        "Continue publishing from current progress: 3\n"
-                       "Exit: 4\n"
+                       "Confirm published videos: 4\n"
+                       "Exit: 5\n"
                        "--------------------------------------------------------\n"
                        "Select an option - ")
     return choice
@@ -242,6 +249,71 @@ def publishVideo(title, staffName):
 
     # if it worked
     return True
+
+def confirmPublishedVideos():
+    areVideosLeft = True
+    while areVideosLeft is True:
+        # check for "Not Published"
+        # if there is, publish it
+        # if not, exit loop
+        loc = pyautogui.locateOnScreen("images/not_published.png")
+        while loc is not None:
+            # it couldn't reach the publish button, so scroll
+            if confirmPublish(loc) is False:
+                break
+            loc = pyautogui.locateOnScreen("images/not_published.png")
+        # if at the bottom of the page, go to next
+        # if not, scroll down
+        if pyautogui.locateOnScreen("images/page_bottom_indicator.png") is not None:
+            # to get to the VERY bottom
+            pyautogui.scroll(-1000)
+            if goToNextPage() is False:
+                areVideosLeft = False
+        else:
+            pyautogui.scroll(-400)
+            wait(1)
+
+# returns False if cannot reach publish button
+def confirmPublish(loc):
+    # loc is the location of "Not Published"
+    # from there, the publish button is (x - 225, y + 75)
+    # move to "Publish" and click
+    loc = pyautogui.center(loc)
+    publishX = loc[0] - 225
+    publishY = loc[1] + 75
+    # if true, cannot reach publish button
+    if publishY >= 900:
+        return False
+    pyautogui.moveTo(publishX, publishY)
+    pyautogui.leftClick()
+    wait(3)
+    # move to "Default Category" checkbox and click it
+    pyautogui.moveTo(329, 397)
+    pyautogui.leftClick()
+    wait(1)
+    # move to "Save Changes" and click it
+    pyautogui.moveTo(1782, 490)
+    pyautogui.leftClick()
+    wait(4)
+
+def goToNextPage():
+    # on first page, so go to second page
+    secondPageButtonLoc = pyautogui.locateOnScreen("images/2_page.png")
+    if pyautogui.locateOnScreen("images/1_page_highlighted.png") is not None and secondPageButtonLoc is not None:
+        secondPageButtonLoc = pyautogui.center(secondPageButtonLoc)
+        pyautogui.moveTo(secondPageButtonLoc[0], secondPageButtonLoc[1])
+        pyautogui.leftClick()
+        wait(4)
+        return True
+    # on second page, so go to third page
+    thirdPageButtonLoc = pyautogui.locateOnScreen("images/3_page.png")
+    if pyautogui.locateOnScreen("images/2_page_highlighted.png") is not None and thirdPageButtonLoc is not None:
+        thirdPageButtonLoc = pyautogui.center(thirdPageButtonLoc)
+        pyautogui.moveTo(thirdPageButtonLoc[0], thirdPageButtonLoc[1])
+        pyautogui.leftClick()
+        wait(4)
+        return True
+    return False
 
 def multiLeftClicker(numClicks):
     for x in range(numClicks):
