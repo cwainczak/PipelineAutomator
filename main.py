@@ -24,9 +24,9 @@ def main():
         continuePublishing()
     elif choice == "4":
         # confirm publishing
-        input("Make sure the appropriate webpage is pulled up beforehand.\nPress enter to continue, and then quickly click the window to ensure focus.")
+        pageNum = input("Make sure the appropriate webpage is pulled up beforehand.\nEnter page number to start on and then quickly click the browser window to ensure focus.\n")
         wait(3)
-        confirmPublishedVideos()
+        confirmPublishedVideos(pageNum)
     elif choice == "5":
         exit(1)
 
@@ -250,7 +250,9 @@ def publishVideo(title, staffName):
     # if it worked
     return True
 
-def confirmPublishedVideos():
+def confirmPublishedVideos(pageNum):
+    goToPage(pageNum)
+    scrollBack = 0
     areVideosLeft = True
     while areVideosLeft is True:
         # check for "Not Published"
@@ -261,6 +263,8 @@ def confirmPublishedVideos():
             # it couldn't reach the publish button, so scroll
             if confirmPublish(loc) is False:
                 break
+            pyautogui.scroll(scrollBack)
+            wait(2)
             loc = pyautogui.locateOnScreen("images/not_published.png")
         # if at the bottom of the page, go to next
         # if not, scroll down
@@ -269,8 +273,10 @@ def confirmPublishedVideos():
             pyautogui.scroll(-1000)
             if goToNextPage() is False:
                 areVideosLeft = False
+            scrollBack = 0
         else:
             pyautogui.scroll(-400)
+            scrollBack += -400
             wait(1)
 
 # returns False if cannot reach publish button
@@ -294,7 +300,7 @@ def confirmPublish(loc):
     # move to "Save Changes" and click it
     pyautogui.moveTo(1782, 490)
     pyautogui.leftClick()
-    wait(4)
+    wait(5)
 
 def goToNextPage():
     # on first page, so go to second page
@@ -314,6 +320,28 @@ def goToNextPage():
         wait(4)
         return True
     return False
+
+# starting from the first page, go to the desired page number
+def goToPage(pageNum):
+    if pageNum == "1":
+        return
+    elif pageNum == "2":
+        loc = pyautogui.locateOnScreen("images/2_page.png")
+        pyautogui.moveTo(loc)
+        pyautogui.leftClick()
+        wait(4)
+    elif pageNum == "3":
+        loc = pyautogui.locateOnScreen("images/3_page.png")
+        pyautogui.moveTo(loc)
+        pyautogui.leftClick()
+        wait(4)
+    else:
+        print("Invalid page number.")
+        exit(1)
+
+def jumpToBottom():
+    pyautogui.scroll(-25000)
+    wait(2)
 
 def multiLeftClicker(numClicks):
     for x in range(numClicks):
