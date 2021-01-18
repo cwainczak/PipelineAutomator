@@ -96,6 +96,9 @@ def dealWithExtraCharacters(title):
     if "&" in title:
         titleList = title.split("&")
         title = getLongerPartOfString(titleList)
+    if "\"" in title:
+        titleList = title.split("\"")
+        title = getLongerPartOfString(titleList)
     if "\n" in title:
         title = title.split("\n")[0]
     return title
@@ -126,6 +129,7 @@ def parsePlaylistForVideos():
                 title = title.replace("&amp;", "&")
             if "&quot;" in title: # html code for "
                 title = title.replace("&quot;", '"')
+            title = removeExtraSpaces(title)
             vt.write(title + "\n")
     vt.close()
 
@@ -158,7 +162,7 @@ def checkForMissingVideos(numOfHtmlFiles):
 
     # compare and keep track of missing videos
     for i in range(len(actualVideoList)):
-        actualVideoList[i] = actualVideoList[i].lower()
+        actualVideoList[i] = removeExtraSpaces(actualVideoList[i].lower())
 
     missingVideos = []
     for title in expectedVideoList:
@@ -215,8 +219,7 @@ def publishVideo(title, staffName):
     wait(1)
 
     # expands the Share folder by moving to the position and clicking the "+" icon
-    pyautogui.moveTo(305, 623)
-    pyautogui.leftClick()
+    clickOnButton("images/share_folder.png")
     # wait for load time
     wait(2)
 
@@ -241,10 +244,8 @@ def publishVideo(title, staffName):
     # wait for load time
     wait(2)
 
-    # move cursor to publish
-    pyautogui.moveTo(1799, 895)
     # click on publish
-    pyautogui.leftClick()
+    clickOnButton("images/publish_button.png")
     wait(5)
 
     # if it worked
@@ -339,9 +340,25 @@ def goToPage(pageNum):
         print("Invalid page number.")
         exit(1)
 
+def getImageCenterLoc(imageFileName):
+    return pyautogui.center(pyautogui.locateOnScreen(imageFileName))
+
+def goToButton(imageFileName):
+    pyautogui.moveTo(getImageCenterLoc(imageFileName))
+
+def clickOnButton(imageFileName):
+    goToButton(imageFileName)
+    pyautogui.leftClick()
+
 def jumpToBottom():
     pyautogui.scroll(-25000)
     wait(2)
+
+def removeExtraSpaces(someString):
+    #lastLetter = someString[len(someString)-1]
+    while someString[-1] == " ":
+        someString = someString[:-1]
+    return someString
 
 def multiLeftClicker(numClicks):
     for x in range(numClicks):

@@ -1,0 +1,222 @@
+Type.registerNamespace('app.Old_App_Code');
+app.Old_App_Code.DataAccess=function() {
+app.Old_App_Code.DataAccess.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+app.Old_App_Code.DataAccess.prototype={
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return app.Old_App_Code.DataAccess._staticInstance.get_path();},
+ListOrganizationsForSharing:function(knownCategoryValues,category,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ListOrganizationsForSharing',false,{knownCategoryValues:knownCategoryValues,category:category,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+ListOrganizations:function(knownCategoryValues,category,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ListOrganizations',false,{knownCategoryValues:knownCategoryValues,category:category,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+ListAllLibrariesForOrganization:function(knownCategoryValues,category,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ListAllLibrariesForOrganization',false,{knownCategoryValues:knownCategoryValues,category:category},succeededCallback,failedCallback,userContext); },
+ListLibrariesWithoutSharingRelationship:function(knownCategoryValues,category,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ListLibrariesWithoutSharingRelationship',false,{knownCategoryValues:knownCategoryValues,category:category,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+ListAutomaticSyncUsersForLibrary:function(knownCategoryValues,category,contextKey,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ListAutomaticSyncUsersForLibrary',false,{knownCategoryValues:knownCategoryValues,category:category,contextKey:contextKey},succeededCallback,failedCallback,userContext); },
+CreateShare:function(sourceLibraryIDs,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'CreateShare',false,{sourceLibraryIDs:sourceLibraryIDs},succeededCallback,failedCallback,userContext); },
+Token:function(succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'Token',true,{},succeededCallback,failedCallback,userContext); },
+CanEmbedAndShareContent:function(shortContentID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'CanEmbedAndShareContent',true,{shortContentID:shortContentID},succeededCallback,failedCallback,userContext); },
+DeleteLibrary:function(id,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DeleteLibrary',false,{id:id},succeededCallback,failedCallback,userContext); },
+DeleteContent:function(shortContentID,unpublishFromYouTube,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DeleteContent',false,{shortContentID:shortContentID,unpublishFromYouTube:unpublishFromYouTube},succeededCallback,failedCallback,userContext); },
+DeleteMedia:function(contentID,mediaID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DeleteMedia',false,{contentID:contentID,mediaID:mediaID},succeededCallback,failedCallback,userContext); },
+DeleteCaption:function(id,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DeleteCaption',false,{id:id},succeededCallback,failedCallback,userContext); },
+UpdateCaptionLabel:function(id,label,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'UpdateCaptionLabel',false,{id:id,label:label},succeededCallback,failedCallback,userContext); },
+DeleteAsset:function(contentID,assetID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DeleteAsset',false,{contentID:contentID,assetID:assetID},succeededCallback,failedCallback,userContext); },
+SetUseEmbeddedCaptions:function(useEmbeddedCaptions,captionTrackID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SetUseEmbeddedCaptions',false,{useEmbeddedCaptions:useEmbeddedCaptions,captionTrackID:captionTrackID},succeededCallback,failedCallback,userContext); },
+ContentState:function(contentID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ContentState',true,{contentID:contentID},succeededCallback,failedCallback,userContext); },
+MediaState:function(contentID,mediaID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'MediaState',true,{contentID:contentID,mediaID:mediaID},succeededCallback,failedCallback,userContext); },
+SetDefaultMedia:function(mediaID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SetDefaultMedia',false,{mediaID:mediaID},succeededCallback,failedCallback,userContext); },
+ResubmitMedia:function(contentID,mediaID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ResubmitMedia',false,{contentID:contentID,mediaID:mediaID},succeededCallback,failedCallback,userContext); },
+IsTranscoderAvailable:function(mediaWorkflowID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'IsTranscoderAvailable',true,{mediaWorkflowID:mediaWorkflowID},succeededCallback,failedCallback,userContext); },
+CanAddContentToLibrary:function(libraryID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'CanAddContentToLibrary',true,{libraryID:libraryID},succeededCallback,failedCallback,userContext); },
+GetUsers:function(searchtext,organizationID,libraryID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetUsers',true,{searchtext:searchtext,organizationID:organizationID,libraryID:libraryID},succeededCallback,failedCallback,userContext); },
+GetUsersForContent:function(succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetUsersForContent',true,{},succeededCallback,failedCallback,userContext); },
+GetUsersForStream:function(contentId,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetUsersForStream',true,{contentId:contentId},succeededCallback,failedCallback,userContext); },
+ContentIsSharedToUser:function(userID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ContentIsSharedToUser',true,{userID:userID},succeededCallback,failedCallback,userContext); },
+ListContentIsSharedToUser:function(userID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ListContentIsSharedToUser',true,{userID:userID},succeededCallback,failedCallback,userContext); },
+ListStreamIsSharedToUser:function(userID,contentId,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ListStreamIsSharedToUser',true,{userID:userID,contentId:contentId},succeededCallback,failedCallback,userContext); },
+HasAccessToVideo:function(userID,contentID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'HasAccessToVideo',true,{userID:userID,contentID:contentID},succeededCallback,failedCallback,userContext); },
+ShareContentToUser:function(userID,isDeleted,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ShareContentToUser',true,{userID:userID,isDeleted:isDeleted},succeededCallback,failedCallback,userContext); },
+ShareStreamToUser:function(userID,contentId,isDeleted,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'ShareStreamToUser',true,{userID:userID,contentId:contentId,isDeleted:isDeleted},succeededCallback,failedCallback,userContext); },
+AvgRatingForContent:function(contentID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'AvgRatingForContent',true,{contentID:contentID},succeededCallback,failedCallback,userContext); },
+SaveRating:function(action,contentID,ratingValue,externalUsername,externalUserFullName,externalIdentityProviderId,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SaveRating',true,{action:action,contentID:contentID,ratingValue:ratingValue,externalUsername:externalUsername,externalUserFullName:externalUserFullName,externalIdentityProviderId:externalIdentityProviderId},succeededCallback,failedCallback,userContext); },
+GetComments:function(contentID,portalId,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetComments',true,{contentID:contentID,portalId:portalId},succeededCallback,failedCallback,userContext); },
+SaveComment:function(contentID,commentText,externalUsername,externalUserFullName,externalIdentityProviderId,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SaveComment',false,{contentID:contentID,commentText:commentText,externalUsername:externalUsername,externalUserFullName:externalUserFullName,externalIdentityProviderId:externalIdentityProviderId},succeededCallback,failedCallback,userContext); },
+SaveContentDetails:function(detailName,detailValue,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SaveContentDetails',false,{detailName:detailName,detailValue:detailValue},succeededCallback,failedCallback,userContext); },
+SaveContentDetailsDate:function(detailName,detailValue,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SaveContentDetailsDate',false,{detailName:detailName,detailValue:detailValue},succeededCallback,failedCallback,userContext); },
+SaveSubmissionDetails:function(detailName,detailValue,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SaveSubmissionDetails',false,{detailName:detailName,detailValue:detailValue},succeededCallback,failedCallback,userContext); },
+SaveSubmissionDetailsDate:function(detailName,detailValue,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SaveSubmissionDetailsDate',false,{detailName:detailName,detailValue:detailValue},succeededCallback,failedCallback,userContext); },
+AddCredit:function(creditModel,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'AddCredit',false,{creditModel:creditModel},succeededCallback,failedCallback,userContext); },
+DeleteCredit:function(creditID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DeleteCredit',false,{creditID:creditID},succeededCallback,failedCallback,userContext); },
+DeleteAutomaticSyncRequest:function(astRequestID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DeleteAutomaticSyncRequest',false,{astRequestID:astRequestID},succeededCallback,failedCallback,userContext); },
+HasAvailableStream:function(mediaID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'HasAvailableStream',false,{mediaID:mediaID},succeededCallback,failedCallback,userContext); },
+CreateTrimJob:function(startTime,endTime,newTitle,copyMetadata,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'CreateTrimJob',false,{startTime:startTime,endTime:endTime,newTitle:newTitle,copyMetadata:copyMetadata},succeededCallback,failedCallback,userContext); },
+EnableTranscoder:function(transcoderId,enable,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'EnableTranscoder',false,{transcoderId:transcoderId,enable:enable},succeededCallback,failedCallback,userContext); },
+UpdateProMediaConfiguration:function(config,temporaryDataPath,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'UpdateProMediaConfiguration',false,{config:config,temporaryDataPath:temporaryDataPath},succeededCallback,failedCallback,userContext); },
+UpdateZencoderConfiguration:function(config,temporaryDataPath,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'UpdateZencoderConfiguration',false,{config:config,temporaryDataPath:temporaryDataPath},succeededCallback,failedCallback,userContext); },
+UpdateEnsembleTranscoderConfiguration:function(config,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'UpdateEnsembleTranscoderConfiguration',false,{config:config},succeededCallback,failedCallback,userContext); },
+UpdateSqueezeConfiguration:function(config,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'UpdateSqueezeConfiguration',false,{config:config},succeededCallback,failedCallback,userContext); },
+IsDropboxAvailable:function(id,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'IsDropboxAvailable',false,{id:id},succeededCallback,failedCallback,userContext); },
+GetLibraryInfo:function(libraryId,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetLibraryInfo',true,{libraryId:libraryId},succeededCallback,failedCallback,userContext); },
+UpdateOrForRestriction:function(restrictionId,newState,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'UpdateOrForRestriction',true,{restrictionId:restrictionId,newState:newState},succeededCallback,failedCallback,userContext); },
+DownloadGallery:function(content,token,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'DownloadGallery',true,{content:content,token:token},succeededCallback,failedCallback,userContext); }}
+app.Old_App_Code.DataAccess.registerClass('app.Old_App_Code.DataAccess',Sys.Net.WebServiceProxy);
+app.Old_App_Code.DataAccess._staticInstance = new app.Old_App_Code.DataAccess();
+app.Old_App_Code.DataAccess.set_path = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_path(value); }
+app.Old_App_Code.DataAccess.get_path = function() { return app.Old_App_Code.DataAccess._staticInstance.get_path(); }
+app.Old_App_Code.DataAccess.set_timeout = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_timeout(value); }
+app.Old_App_Code.DataAccess.get_timeout = function() { return app.Old_App_Code.DataAccess._staticInstance.get_timeout(); }
+app.Old_App_Code.DataAccess.set_defaultUserContext = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_defaultUserContext(value); }
+app.Old_App_Code.DataAccess.get_defaultUserContext = function() { return app.Old_App_Code.DataAccess._staticInstance.get_defaultUserContext(); }
+app.Old_App_Code.DataAccess.set_defaultSucceededCallback = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_defaultSucceededCallback(value); }
+app.Old_App_Code.DataAccess.get_defaultSucceededCallback = function() { return app.Old_App_Code.DataAccess._staticInstance.get_defaultSucceededCallback(); }
+app.Old_App_Code.DataAccess.set_defaultFailedCallback = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_defaultFailedCallback(value); }
+app.Old_App_Code.DataAccess.get_defaultFailedCallback = function() { return app.Old_App_Code.DataAccess._staticInstance.get_defaultFailedCallback(); }
+app.Old_App_Code.DataAccess.set_enableJsonp = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_enableJsonp(value); }
+app.Old_App_Code.DataAccess.get_enableJsonp = function() { return app.Old_App_Code.DataAccess._staticInstance.get_enableJsonp(); }
+app.Old_App_Code.DataAccess.set_jsonpCallbackParameter = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_jsonpCallbackParameter(value); }
+app.Old_App_Code.DataAccess.get_jsonpCallbackParameter = function() { return app.Old_App_Code.DataAccess._staticInstance.get_jsonpCallbackParameter(); }
+app.Old_App_Code.DataAccess.set_path("/app/admin/DataAccess.asmx");
+app.Old_App_Code.DataAccess.ListOrganizationsForSharing= function(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListOrganizationsForSharing(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ListOrganizations= function(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListOrganizations(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ListAllLibrariesForOrganization= function(knownCategoryValues,category,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListAllLibrariesForOrganization(knownCategoryValues,category,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ListLibrariesWithoutSharingRelationship= function(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListLibrariesWithoutSharingRelationship(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ListAutomaticSyncUsersForLibrary= function(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListAutomaticSyncUsersForLibrary(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.CreateShare= function(sourceLibraryIDs,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.CreateShare(sourceLibraryIDs,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.Token= function(onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.Token(onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.CanEmbedAndShareContent= function(shortContentID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.CanEmbedAndShareContent(shortContentID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DeleteLibrary= function(id,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DeleteLibrary(id,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DeleteContent= function(shortContentID,unpublishFromYouTube,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DeleteContent(shortContentID,unpublishFromYouTube,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DeleteMedia= function(contentID,mediaID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DeleteMedia(contentID,mediaID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DeleteCaption= function(id,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DeleteCaption(id,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.UpdateCaptionLabel= function(id,label,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.UpdateCaptionLabel(id,label,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DeleteAsset= function(contentID,assetID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DeleteAsset(contentID,assetID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SetUseEmbeddedCaptions= function(useEmbeddedCaptions,captionTrackID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SetUseEmbeddedCaptions(useEmbeddedCaptions,captionTrackID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ContentState= function(contentID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ContentState(contentID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.MediaState= function(contentID,mediaID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.MediaState(contentID,mediaID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SetDefaultMedia= function(mediaID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SetDefaultMedia(mediaID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ResubmitMedia= function(contentID,mediaID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ResubmitMedia(contentID,mediaID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.IsTranscoderAvailable= function(mediaWorkflowID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.IsTranscoderAvailable(mediaWorkflowID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.CanAddContentToLibrary= function(libraryID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.CanAddContentToLibrary(libraryID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.GetUsers= function(searchtext,organizationID,libraryID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.GetUsers(searchtext,organizationID,libraryID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.GetUsersForContent= function(onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.GetUsersForContent(onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.GetUsersForStream= function(contentId,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.GetUsersForStream(contentId,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ContentIsSharedToUser= function(userID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ContentIsSharedToUser(userID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ListContentIsSharedToUser= function(userID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListContentIsSharedToUser(userID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ListStreamIsSharedToUser= function(userID,contentId,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListStreamIsSharedToUser(userID,contentId,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.HasAccessToVideo= function(userID,contentID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.HasAccessToVideo(userID,contentID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ShareContentToUser= function(userID,isDeleted,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ShareContentToUser(userID,isDeleted,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.ShareStreamToUser= function(userID,contentId,isDeleted,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ShareStreamToUser(userID,contentId,isDeleted,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.AvgRatingForContent= function(contentID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.AvgRatingForContent(contentID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SaveRating= function(action,contentID,ratingValue,externalUsername,externalUserFullName,externalIdentityProviderId,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SaveRating(action,contentID,ratingValue,externalUsername,externalUserFullName,externalIdentityProviderId,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.GetComments= function(contentID,portalId,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.GetComments(contentID,portalId,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SaveComment= function(contentID,commentText,externalUsername,externalUserFullName,externalIdentityProviderId,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SaveComment(contentID,commentText,externalUsername,externalUserFullName,externalIdentityProviderId,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SaveContentDetails= function(detailName,detailValue,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SaveContentDetails(detailName,detailValue,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SaveContentDetailsDate= function(detailName,detailValue,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SaveContentDetailsDate(detailName,detailValue,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SaveSubmissionDetails= function(detailName,detailValue,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SaveSubmissionDetails(detailName,detailValue,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.SaveSubmissionDetailsDate= function(detailName,detailValue,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.SaveSubmissionDetailsDate(detailName,detailValue,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.AddCredit= function(creditModel,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.AddCredit(creditModel,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DeleteCredit= function(creditID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DeleteCredit(creditID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DeleteAutomaticSyncRequest= function(astRequestID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DeleteAutomaticSyncRequest(astRequestID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.HasAvailableStream= function(mediaID,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.HasAvailableStream(mediaID,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.CreateTrimJob= function(startTime,endTime,newTitle,copyMetadata,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.CreateTrimJob(startTime,endTime,newTitle,copyMetadata,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.EnableTranscoder= function(transcoderId,enable,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.EnableTranscoder(transcoderId,enable,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.UpdateProMediaConfiguration= function(config,temporaryDataPath,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.UpdateProMediaConfiguration(config,temporaryDataPath,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.UpdateZencoderConfiguration= function(config,temporaryDataPath,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.UpdateZencoderConfiguration(config,temporaryDataPath,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.UpdateEnsembleTranscoderConfiguration= function(config,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.UpdateEnsembleTranscoderConfiguration(config,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.UpdateSqueezeConfiguration= function(config,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.UpdateSqueezeConfiguration(config,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.IsDropboxAvailable= function(id,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.IsDropboxAvailable(id,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.GetLibraryInfo= function(libraryId,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.GetLibraryInfo(libraryId,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.UpdateOrForRestriction= function(restrictionId,newState,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.UpdateOrForRestriction(restrictionId,newState,onSuccess,onFailed,userContext); }
+app.Old_App_Code.DataAccess.DownloadGallery= function(content,token,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.DownloadGallery(content,token,onSuccess,onFailed,userContext); }
+var gtc = Sys.Net.WebServiceProxy._generateTypedConstructor;
+Type.registerNamespace('AjaxControlToolkit');
+if (typeof(AjaxControlToolkit.CascadingDropDownNameValue) === 'undefined') {
+AjaxControlToolkit.CascadingDropDownNameValue=gtc("AjaxControlToolkit.CascadingDropDownNameValue");
+AjaxControlToolkit.CascadingDropDownNameValue.registerClass('AjaxControlToolkit.CascadingDropDownNameValue');
+}
+Type.registerNamespace('ensembleVideo.BusinessLayer.DataAccessLayer.Model');
+if (typeof(ensembleVideo.BusinessLayer.DataAccessLayer.Model.ContentCredit) === 'undefined') {
+ensembleVideo.BusinessLayer.DataAccessLayer.Model.ContentCredit=gtc("ensembleVideo.BusinessLayer.DataAccessLayer.Model.ContentCredit");
+ensembleVideo.BusinessLayer.DataAccessLayer.Model.ContentCredit.registerClass('ensembleVideo.BusinessLayer.DataAccessLayer.Model.ContentCredit');
+}
+Type.registerNamespace('ensembleVideo.Web');
+if (typeof(ensembleVideo.Web.RestrictedStreamingResponse) === 'undefined') {
+ensembleVideo.Web.RestrictedStreamingResponse=gtc("ensembleVideo.Web.RestrictedStreamingResponse");
+ensembleVideo.Web.RestrictedStreamingResponse.registerClass('ensembleVideo.Web.RestrictedStreamingResponse');
+}
+Type.registerNamespace('ensembleVideo.Transcoding.ProMedia.Config');
+if (typeof(ensembleVideo.Transcoding.ProMedia.Config.ProMediaConfiguration) === 'undefined') {
+ensembleVideo.Transcoding.ProMedia.Config.ProMediaConfiguration=gtc("ensembleVideo.Transcoding.ProMedia.Config.ProMediaConfiguration");
+ensembleVideo.Transcoding.ProMedia.Config.ProMediaConfiguration.registerClass('ensembleVideo.Transcoding.ProMedia.Config.ProMediaConfiguration');
+}
+Type.registerNamespace('ensembleVideo.Transcoding.Zencoder.Config');
+if (typeof(ensembleVideo.Transcoding.Zencoder.Config.ZencoderConfiguration) === 'undefined') {
+ensembleVideo.Transcoding.Zencoder.Config.ZencoderConfiguration=gtc("ensembleVideo.Transcoding.Zencoder.Config.ZencoderConfiguration");
+ensembleVideo.Transcoding.Zencoder.Config.ZencoderConfiguration.registerClass('ensembleVideo.Transcoding.Zencoder.Config.ZencoderConfiguration');
+}
+Type.registerNamespace('ensembleVideo.Transcoding.EnsembleTranscoder.Config');
+if (typeof(ensembleVideo.Transcoding.EnsembleTranscoder.Config.EnsembleTranscoderConfiguration) === 'undefined') {
+ensembleVideo.Transcoding.EnsembleTranscoder.Config.EnsembleTranscoderConfiguration=gtc("ensembleVideo.Transcoding.EnsembleTranscoder.Config.EnsembleTranscoderConfiguration");
+ensembleVideo.Transcoding.EnsembleTranscoder.Config.EnsembleTranscoderConfiguration.registerClass('ensembleVideo.Transcoding.EnsembleTranscoder.Config.EnsembleTranscoderConfiguration');
+}
+Type.registerNamespace('ensembleVideo.Transcoding.Squeeze.Config');
+if (typeof(ensembleVideo.Transcoding.Squeeze.Config.SqueezeConfiguration) === 'undefined') {
+ensembleVideo.Transcoding.Squeeze.Config.SqueezeConfiguration=gtc("ensembleVideo.Transcoding.Squeeze.Config.SqueezeConfiguration");
+ensembleVideo.Transcoding.Squeeze.Config.SqueezeConfiguration.registerClass('ensembleVideo.Transcoding.Squeeze.Config.SqueezeConfiguration');
+}
