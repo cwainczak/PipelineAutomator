@@ -131,7 +131,7 @@ app.Old_App_Code.DataAccess.set_enableJsonp = function(value) { app.Old_App_Code
 app.Old_App_Code.DataAccess.get_enableJsonp = function() { return app.Old_App_Code.DataAccess._staticInstance.get_enableJsonp(); }
 app.Old_App_Code.DataAccess.set_jsonpCallbackParameter = function(value) { app.Old_App_Code.DataAccess._staticInstance.set_jsonpCallbackParameter(value); }
 app.Old_App_Code.DataAccess.get_jsonpCallbackParameter = function() { return app.Old_App_Code.DataAccess._staticInstance.get_jsonpCallbackParameter(); }
-app.Old_App_Code.DataAccess.set_path("/app/admin/DataAccess.asmx");
+app.Old_App_Code.DataAccess.set_path("/app/Admin/DataAccess.asmx");
 app.Old_App_Code.DataAccess.ListOrganizationsForSharing= function(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListOrganizationsForSharing(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext); }
 app.Old_App_Code.DataAccess.ListOrganizations= function(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListOrganizations(knownCategoryValues,category,contextKey,onSuccess,onFailed,userContext); }
 app.Old_App_Code.DataAccess.ListAllLibrariesForOrganization= function(knownCategoryValues,category,onSuccess,onFailed,userContext) {app.Old_App_Code.DataAccess._staticInstance.ListAllLibrariesForOrganization(knownCategoryValues,category,onSuccess,onFailed,userContext); }

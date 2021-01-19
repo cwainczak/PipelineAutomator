@@ -9,9 +9,10 @@ def main():
         # parse video titles
         parsePlaylistForVideos()
     elif choice == "2":
-        # check for missing videos
+        # check for missing videos and for extra videos
+        # missing videos
         i = int(input("Enter the amount of playlist .html files to parse: "))
-        missingVideos = checkForMissingVideos(i)
+        missingVideos, extraVideos = checkForMissingAndExtraVideos(i)
         numOfMissingVideos = len(missingVideos)
         print("There are: " + str(numOfMissingVideos) + " missing videos...")
         i = getOptionYN("Do you want to write them to video_titles_remaining.txt? (y/n): ")
@@ -19,15 +20,35 @@ def main():
             f = open("video_titles_remaining.txt", "w")
             for title in missingVideos:
                 f.write(title + "\n")
+        # extra videos
+        numOfExtraVideos = len(extraVideos)
+        print("There are: " + str(numOfExtraVideos) + " extra videos...")
+        i = getOptionYN("Do you want to write them to extra_videos.txt? (y/n): ")
+        if i == "y":
+            f = open("extra_videos.txt", "w")
+            for title in extraVideos:
+                f.write(title + "\n")
+
     elif choice == "3":
+        # check for duplicates
+        dupVideos = checkAllVideosForDuplicates()
+        numOfDupVideos = len(dupVideos)
+        print("There are: " + str(numOfDupVideos) + " missing videos...")
+        i = getOptionYN("Do you want to write them to duplicate_videos.txt? (y/n): ")
+        if i == "y":
+            f = open("duplicate_videos.txt", "w")
+            for title in dupVideos:
+                f.write(title)
+    elif choice == "4":
         # continue publishing
         continuePublishing()
-    elif choice == "4":
+    elif choice == "5":
         # confirm publishing
-        pageNum = input("Make sure the appropriate webpage is pulled up beforehand.\nEnter page number to start on and then quickly click the browser window to ensure focus.\n")
+        pageNum = input(
+            "Make sure the appropriate webpage is pulled up beforehand.\nEnter page number to start on and then quickly click the browser window to ensure focus.\n")
         wait(3)
         confirmPublishedVideos(pageNum)
-    elif choice == "5":
+    elif choice == "6":
         exit(1)
 
 def continuePublishing():
@@ -61,22 +82,24 @@ def continuePublishing():
 def getOptionMenu():
     choice = input("--------------------------------------------------------\n"
                    "Parse playlist .html file for all video titles: 1\n"
-                   "Check for shared library missing videos: 2\n"
-                   "Continue publishing from current progress: 3\n"
-                   "Confirm published videos: 4\n"
-                   "Exit: 5\n"
+                   "Check for shared library missing and extra videos: 2\n"
+                   "Check for duplicate videos: 3\n"
+                   "Continue publishing from current progress: 4\n"
+                   "Confirm published videos: 5\n"
+                   "Exit: 6\n"
                    "--------------------------------------------------------\n"
                    "Select an option - ")
-    while choice != "1" and choice != "2" and choice != "3" and choice != "4" and choice != "5":
+    while choice != "1" and choice != "2" and choice != "3" and choice != "4" and choice != "5" and choice != "6":
         print("Invalid input. Enter respective number to continue.")
         choice = input("--------------------------------------------------------\n"
-                       "Parse playlist .html file for all video titles: 1\n"
-                       "Check for shared library missing videos: 2\n"
-                       "Continue publishing from current progress: 3\n"
-                       "Confirm published videos: 4\n"
-                       "Exit: 5\n"
-                       "--------------------------------------------------------\n"
-                       "Select an option - ")
+                   "Parse playlist .html file for all video titles: 1\n"
+                   "Check for shared library missing and extra videos: 2\n"
+                   "Check for duplicate videos: 3\n"
+                   "Continue publishing from current progress: 4\n"
+                   "Confirm published videos: 5\n"
+                   "Exit: 6\n"
+                   "--------------------------------------------------------\n"
+                   "Select an option - ")
     return choice
 
 def getOptionYN(prompt):
@@ -129,11 +152,11 @@ def parsePlaylistForVideos():
                 title = title.replace("&amp;", "&")
             if "&quot;" in title: # html code for "
                 title = title.replace("&quot;", '"')
-            title = removeExtraSpaces(title)
+            title = removeExtraSpacesAndNewlines(title)
             vt.write(title + "\n")
     vt.close()
 
-def checkForMissingVideos(numOfHtmlFiles):
+def checkForMissingAndExtraVideos(numOfHtmlFiles):
     # add all videos to list
     expectedVideoList = []
     v = open("all_video_titles.txt", "r")
@@ -161,15 +184,27 @@ def checkForMissingVideos(numOfHtmlFiles):
             actualVideoList[x] = actualVideoList[x].replace("&quot;", '"')
 
     # compare and keep track of missing videos
+    # convert actual videos to lowercase with no extra characters (spaces or newlines) at the end
     for i in range(len(actualVideoList)):
-        actualVideoList[i] = removeExtraSpaces(actualVideoList[i].lower())
+        actualVideoList[i] = removeExtraSpacesAndNewlines(actualVideoList[i].lower())
 
     missingVideos = []
     for title in expectedVideoList:
         if title.lower() not in actualVideoList:
             # add to missing videos
             missingVideos.append(title)
-    return missingVideos
+
+    # convert expected videos to lowercase with no extra characters (spaces or newlines) at the end
+    for i in range(len(expectedVideoList)):
+        expectedVideoList[i] = removeExtraSpacesAndNewlines(expectedVideoList[i].lower())
+
+    extraVideos = []
+    for title in actualVideoList:
+        if title not in expectedVideoList:
+            # add to extra videos
+            extraVideos.append(title)
+
+    return missingVideos, extraVideos
 
 def getLineCount(textFile):
     lineCount = 0
@@ -340,6 +375,19 @@ def goToPage(pageNum):
         print("Invalid page number.")
         exit(1)
 
+def checkAllVideosForDuplicates():
+    dupVideos = []
+    with open('all_video_titles.txt') as f:
+        seen = set()
+        for line in f:
+            line_lower = line.lower()
+            if line_lower in seen:
+                dupVideos.append(line)
+            else:
+                seen.add(line_lower)
+    f.close()
+    return dupVideos
+
 def getImageCenterLoc(imageFileName):
     return pyautogui.center(pyautogui.locateOnScreen(imageFileName))
 
@@ -354,9 +402,8 @@ def jumpToBottom():
     pyautogui.scroll(-25000)
     wait(2)
 
-def removeExtraSpaces(someString):
-    #lastLetter = someString[len(someString)-1]
-    while someString[-1] == " ":
+def removeExtraSpacesAndNewlines(someString):
+    while someString[-1] == " " or someString[-1] == "\n":
         someString = someString[:-1]
     return someString
 
